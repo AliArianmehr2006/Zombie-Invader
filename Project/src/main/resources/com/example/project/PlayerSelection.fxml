@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.project.PlayerSelectionController"
+      fx:id="rootVBox"
+      alignment="CENTER"
+      spacing="20">
+
+    <Label text=" بازیکن انتخاب کن" style="-fx-font-size: 24px; -fx-text-fill: white;" />
+
+    <HBox spacing="30">
+        <VBox spacing="10" alignment="CENTER">
+            <ImageView fx:id="player1Image" fitWidth="100" fitHeight="100" pickOnBounds="true" preserveRatio="true" />
+            <Button text="تانک " onAction="#selectPlayer1"/>
+        </VBox>
+        <VBox spacing="10" alignment="CENTER">
+            <ImageView fx:id="player2Image" fitWidth="100" fitHeight="100" pickOnBounds="true" preserveRatio="true" />
+            <Button text="جت جنگی" onAction="#selectPlayer2"/>
+        </VBox>
+        <VBox spacing="10" alignment="CENTER">
+            <ImageView fx:id="player3Image" fitWidth="100" fitHeight="100" pickOnBounds="true" preserveRatio="true" />
+            <Button text="هواپیما جنگی" onAction="#selectPlayer3"/>
+        </VBox>
+    </HBox>
+
+</VBox>
