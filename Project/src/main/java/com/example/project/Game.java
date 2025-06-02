@@ -13,7 +13,7 @@ public class Game extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
-        stage.setTitle(" بازی زامبی");
+        stage.setTitle("Zombie-Invader");
         stage.setScene(scene);
         stage.show();
     }
