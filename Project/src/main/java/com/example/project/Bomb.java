@@ -17,7 +17,8 @@ public class Bomb extends ImageView {
     }
 
     public void startMoving() {
-        transition = new TranslateTransition(Duration.seconds(4), this);
+        //سرعت پایین امدن بمب از بالا صفحه به پایین
+        transition = new TranslateTransition(Duration.seconds(5), this);
         transition.setToY(1000);
         transition.play();
     }

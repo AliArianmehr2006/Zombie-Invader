@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -18,12 +19,14 @@ public class StartPageController {
     private Button recordModeButton;
 
     @FXML
-    private VBox rootVBox; // اتصال به VBox از FXML
+    private VBox rootVBox;
+
+    @FXML
+    private TextField nameField;  // اضافه شد
 
     @FXML
     public void initialize() {
         try {
-            // مسیر تصویر را از resources بارگذاری می‌کنیم
             Image backgroundImage = new Image(getClass().getResourceAsStream("/com/example/img/background2.jpg"));
 
             BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
@@ -45,7 +48,13 @@ public class StartPageController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/project/main_page.fxml"));
             AnchorPane root = loader.load();
             MainPageController controller = loader.getController();
-            controller.setRecordMode(false); // حالت مرحله‌ای
+            controller.setRecordMode(false);
+
+            String playerName = nameField.getText().trim();
+            if (playerName.isEmpty()) {
+                playerName = "Player"; // مقدار پیشفرض اگر چیزی وارد نکرده باشد
+            }
+            controller.setPlayerName(playerName);
 
             Stage stage = (Stage) stageModeButton.getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -61,7 +70,13 @@ public class StartPageController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/project/main_page.fxml"));
             AnchorPane root = loader.load();
             MainPageController controller = loader.getController();
-            controller.setRecordMode(true); // حالت رکورد
+            controller.setRecordMode(true);
+
+            String playerName = nameField.getText().trim();
+            if (playerName.isEmpty()) {
+                playerName = "Player";
+            }
+            controller.setPlayerName(playerName);
 
             Stage stage = (Stage) recordModeButton.getScene().getWindow();
             stage.setScene(new Scene(root));

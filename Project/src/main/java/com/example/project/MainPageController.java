@@ -3,7 +3,9 @@ package com.example.project;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.net.URL;
 import java.util.*;
 
@@ -30,6 +33,7 @@ public class MainPageController implements Initializable {
     @FXML
     private Label healthText;
 
+    private String playerName;
     private final List<Bomb> bombs = new ArrayList<>();
     private Timeline bombSpawnTimeline;
 
@@ -135,7 +139,7 @@ public class MainPageController implements Initializable {
 
     private void spawnZombies() {
         //سرعت اسپان شدن زامبی ها
-        zombieSpawnTimeline = new Timeline(new KeyFrame(Duration.seconds(2.5), e -> {
+        zombieSpawnTimeline = new Timeline(new KeyFrame(Duration.seconds(2.1), e -> {
             Zombie zombie;
 
             if (isRecordMode) {
@@ -313,14 +317,32 @@ public class MainPageController implements Initializable {
             stageLabel.setText("مرحله: " + currentStage);
         }
     }
-
     private void gameOver() {
         shootTimeline.stop();
         zombieSpawnTimeline.stop();
         if (bombSpawnTimeline != null) bombSpawnTimeline.stop();
         if (appleSpawnTimeline != null) appleSpawnTimeline.stop();
-        // نمایش پیغام یا رفتن به صفحه پایان بازی
+
+        // رفتن به صفحه پایان بازی با ارسال نام بازیکن و امتیاز
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/project/end_page.fxml"));
+                AnchorPane root = loader.load();
+
+                // گرفتن کنترلر صفحه پایان و ارسال اطلاعات
+                EndPageController controller = loader.getController();
+                controller.setPlayerData(playerName, score);  // ✅ فقط این متد کافی است
+
+                Scene scene = gamePane.getScene();
+                scene.setRoot(root);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
+
+
+
 
     //متد نمایش قلب ها
     private void updateHealthHearts() {
@@ -374,6 +396,17 @@ public class MainPageController implements Initializable {
         enemyBullets.add(bullet);
         Platform.runLater(() -> gamePane.getChildren().add(bullet));
         bullet.startMoving();
+    }
+
+    public void setPlayerName(String name) {
+        this.playerName = name;
+    }
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public int getScore() {
+        return score;
     }
 
 }
