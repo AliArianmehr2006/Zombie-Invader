@@ -17,7 +17,7 @@ public class Bomb extends ImageView {
     }
 
     public void startMoving() {
-        transition = new TranslateTransition(Duration.seconds(6), this);
+        transition = new TranslateTransition(Duration.seconds(4), this);
         transition.setToY(1000);
         transition.play();
     }

@@ -7,7 +7,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
 
 public class Bullet extends ImageView {
-    private static final double SPEED = 5;
+    private static final double SPEED = 2.5;//سرعت بالا رفتن تیر ها از پایین صفحه به بالا
     private AnimationTimer timer;
 
     public Bullet(double startX, double startY) {

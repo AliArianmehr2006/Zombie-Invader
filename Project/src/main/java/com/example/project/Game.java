@@ -16,8 +16,8 @@ public class Game extends Application {
         stage.setScene(scene);
         stage.show();
 
-        SoundThread t = new SoundThread();
-        t.start();
+//        SoundThread t = new SoundThread();
+//        t.start();
     }
 
     public static void main(String[] args) {

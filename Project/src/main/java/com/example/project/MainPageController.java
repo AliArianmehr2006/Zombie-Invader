@@ -108,7 +108,8 @@ public class MainPageController implements Initializable {
     }
 
     private void startShooting() {
-        shootTimeline = new Timeline(new KeyFrame(Duration.millis(300), event -> {
+        //سرعت شلیک شدت تیر از سفینه
+        shootTimeline = new Timeline(new KeyFrame(Duration.millis(450), event -> {
             double bulletX = player_ship.getLayoutX() + player_ship.getFitWidth() / 2 - 5;
             double bulletY = player_ship.getLayoutY() - 10;
 
@@ -133,6 +134,7 @@ public class MainPageController implements Initializable {
     }
 
     private void spawnZombies() {
+        //سرعت اسپان شدن زامبی ها
         zombieSpawnTimeline = new Timeline(new KeyFrame(Duration.seconds(2.5), e -> {
             Zombie zombie;
 
@@ -177,6 +179,7 @@ public class MainPageController implements Initializable {
                 List<Zombie> zombiesToRemove = new ArrayList<>();
                 List<Zombie> zombiesReachedBottom = new ArrayList<>();
                 List<EnemyBullet> enemyBulletsHitPlayer = new ArrayList<>();
+                List<Bomb> bombsToRemove = new ArrayList<>();
 
                 // تیر به زامبی برخورد کرد
                 for (Bullet bullet : bullets) {
@@ -225,10 +228,33 @@ public class MainPageController implements Initializable {
                 }
                 enemyBullets.removeAll(enemyBulletsToRemove);
 
-                // کم کردن جان پلیر
+                // بمب به پلیر خورد
+                for (Bomb bomb : bombs) {
+                    if (bomb.getBoundsInParent().intersects(player_ship.getBoundsInParent())) {
+                        bombsToRemove.add(bomb);
+                        playerHealth--;
+                        updateHealthHearts();
+                        if (playerHealth <= 0) {
+                            System.out.println("🧟‍♂️شما مُردید");
+                            gameOver();
+                            stop();
+                            return;
+                        }
+                    } else if (bomb.getLayoutY() > gamePane.getHeight()) {
+                        bombsToRemove.add(bomb);
+                    }
+                }
+
+                for (Bomb bomb : bombsToRemove) {
+                    bomb.stopMoving();
+                    gamePane.getChildren().remove(bomb);
+                    bombs.remove(bomb);
+                }
+
+                // کم کردن جان پلیر با تیر دشمن
                 for (EnemyBullet eb : enemyBulletsHitPlayer) {
                     playerHealth--;
-                    removeOneHeart();
+                    updateHealthHearts();
                     if (playerHealth <= 0) {
                         System.out.println("🧟‍♂️ بازی تمام شد!");
                         gameOver();
@@ -257,7 +283,7 @@ public class MainPageController implements Initializable {
                         applesToRemove.add(apple);
                         if (playerHealth < 10) {
                             playerHealth++;
-                            addOneHeart();
+                            updateHealthHearts();
                         }
                     } else if (apple.getLayoutY() > gamePane.getHeight()) {
                         applesToRemove.add(apple);
@@ -273,6 +299,7 @@ public class MainPageController implements Initializable {
         };
         timer.start();
     }
+
 
     private void updateStage() {
         if (!isRecordMode) {
@@ -295,6 +322,7 @@ public class MainPageController implements Initializable {
         // نمایش پیغام یا رفتن به صفحه پایان بازی
     }
 
+    //متد نمایش قلب ها
     private void updateHealthHearts() {
         healthBox.getChildren().clear();
         for (int i = 0; i < playerHealth; i++) {
@@ -303,7 +331,7 @@ public class MainPageController implements Initializable {
             heart.setFitWidth(20);
             healthBox.getChildren().add(heart);
         }
-        healthText.setText("جان =");
+        healthText.setText("");
     }
 
     private void removeOneHeart() {
